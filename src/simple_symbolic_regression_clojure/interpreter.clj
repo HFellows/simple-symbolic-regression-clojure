@@ -1,5 +1,6 @@
 (ns simple-symbolic-regression-clojure.interpreter
   (:use [clojure.math.numeric-tower])
+  ;(:require [clojure.core.reducers :as r])
   )
 
 ;;; Interpreter
@@ -67,7 +68,7 @@
 
 (defrecord Rubric [input output])
 
-(def score-penalty 100000000000000000000N)
+(def score-penalty 100000000000000000000)
 
 (defn score-on [script rubric]
   (if-let [result (:result (interpret script (:input rubric)))]
@@ -75,4 +76,4 @@
     score-penalty))
 
 (defn total-score-on [script rubrics]
-  (reduce + (map (partial score-on script) rubrics)))
+  (reduce + (pmap (partial score-on script) rubrics)))
