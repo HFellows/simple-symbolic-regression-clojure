@@ -61,7 +61,7 @@
   ([script]
    (make-individual script nil))
   ([script score]
-   (->Individual script (agent 0)))
+   (->Individual script (agent nil))))
 
 
 (defn set-score [individual score]

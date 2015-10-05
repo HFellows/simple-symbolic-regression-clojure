@@ -27,14 +27,9 @@
 (defn print-generation-report
   [population]
   (do
-    (println "Test")
-
-    (map #(println (str %)) population)
-    (println "Test 2")
     (map awaitmentize population)
-    (println "Test 3")
     (println (str "Min error: "
-                  (apply min (map #(deref(get-score %)) population))))))
+                  (apply min (map get-score population))))))
 
 (defn -main
   "Run the system against the Sine rubrics"
