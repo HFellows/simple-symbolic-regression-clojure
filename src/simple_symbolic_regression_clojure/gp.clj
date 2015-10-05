@@ -61,14 +61,15 @@
   ([script]
    (make-individual script nil))
   ([script score]
-   (->Individual script score)))
+   (->Individual script (agent 0)))
 
 
 (defn set-score [individual score]
+  (println "People shouldn't use set-score, it's depreciated.")
   (assoc individual :score score))
 
 (defn get-score [individual]
-  (:score individual))
+ (deref (:score individual)))
 
 
 ;;; Generating random scripts, individuals, etc.
@@ -95,22 +96,17 @@
 
 ;;; Scoring (this is where the parallelism probably wants to go!)
 
-
 (defn score-using-rubrics
   "assigns the score value of an Individual by invoking `total-score-on` a set of Rubrics"
   [individual rubrics]
-  (set-score individual (total-score-on (:script individual) rubrics))
-  )
-
+  (send (:score individual) total-score-on (:script individual) rubrics))
 
 (defn score-population
   "takes an unscored population and returns the same ones with scores assigned"
   [population rubrics]
-  (pmap #(score-using-rubrics % rubrics) population))
-
+  (map #(score-using-rubrics % rubrics) population))
 
 ;;; Main evolutionary loop
-
 
 ; TODO: This is too problem specific and should be in core not in gp,
 ; which will require making it an argument to make-baby?

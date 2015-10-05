@@ -75,5 +75,5 @@
     (abs (- (:output rubric) result))
     score-penalty))
 
-(defn total-score-on [script rubrics]
-  (reduce + (pmap (partial score-on script) rubrics)))
+(defn total-score-on [cript rubrics]
+  (reduce + (map (partial score-on script) rubrics)))

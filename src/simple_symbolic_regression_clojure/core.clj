@@ -22,16 +22,25 @@
   (score-population (random-population 500 random-sine-guess) sine-rubrics))
 
 
+(defn awaitmentize [individual] (await (get-score individual)))
+
 (defn print-generation-report
   [population]
-  (println (str "Min error: "
-                (apply min (map get-score population)))))
+  (do
+    (println "Test")
 
+    (map #(println (str %)) population)
+    (println "Test 2")
+    (map awaitmentize population)
+    (println "Test 3")
+    (println (str "Min error: "
+                  (apply min (map #(deref(get-score %)) population))))))
 
 (defn -main
   "Run the system against the Sine rubrics"
   [& args]
   (dorun
+
    (map print-generation-report
         (take 100 (future-history initial-sine-population 0.05 sine-rubrics))))
   ; The shutdown-agents call is necessary to make sure that things like "lein run"
